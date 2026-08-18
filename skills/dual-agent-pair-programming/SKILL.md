@@ -1,8 +1,6 @@
 ---
 name: dual-agent-pair-programming
-description: >-
-  Orchestrates two AI agents in a structured pair programming workflow — Agent A (Senior Engineer) implements tasks per spec, Agent B (Tech Lead / Reviewer) reviews for correctness, completeness, and spec compliance. Use when implementing features that touch multiple files, involve core business logic, or require high correctness guarantees. Ensures coding stays aligned with PRD and todo list through adversarial review cycles with standardized handoff protocols.
-  触发词：结对编程、双agent编程、AI结对、双人编程审查、agent协作开发、对抗式代码审查。
+description: Orchestrates two AI agents in a structured pair programming workflow — Agent A (Senior Engineer) implements tasks per spec, Agent B (Tech Lead / Reviewer) reviews for correctness, completeness, and spec compliance. Use when implementing features that touch multiple files, involve core business logic, or require high correctness guarantees. Ensures coding stays aligned with PRD and todo list through adversarial review cycles with standardized handoff protocols. 触发词：结对编程、双agent编程、双agent结对编程、AI结对、双人编程审查、agent协作开发、对抗式代码审查。
 version: 1.3
 ---
 
