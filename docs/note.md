@@ -81,13 +81,8 @@ git push origin my-skills
 
 ## 修改日志
 
-20260818:
-
-using-agent-skills
-加入了：
-Multiple files + high correctness? → dual-agent-pair-programming
-
-| Orchestrate | dual-agent-pair-programming | Two-agent adversarial review: Agent A implements, Agent B reviews |
+20260818: 
+- 添加自定义skill: dual-agent-pair-programming
 
 ---
 
