@@ -65,8 +65,8 @@ This skill is tool-agnostic. Agent A and B can be any AI coding tool (Claude Cod
 
 Example declaration:
 ```
-Agent A (Engineer): Claude Code (claude-4-opus)
-Agent B (Reviewer): Gemini CLI (gemini-2.5-pro)
+Agent A (Engineer): Claude Code (claude-opus-5)
+Agent B (Reviewer): Gemini CLI (gemini-3.6-flash)
 ```
 
 **Strong recommendation:** Use **different models or tools** for A and B. Same-model agents share blind spots — they were trained on similar data with similar biases, so a mistake Agent A doesn't notice is disproportionately likely to be a mistake Agent B also doesn't notice. Cross-model pairing (e.g., Claude + Gemini, or GPT + Claude) surfaces a meaningfully different set of issues.
