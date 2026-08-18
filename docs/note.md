@@ -1,14 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: '8df45a6b-72bc-4ea0-b217-9228a7646ba8'
-  PropagateID: '8df45a6b-72bc-4ea0-b217-9228a7646ba8'
-  ReservedCode1: '30417c7a-78d1-4dd2-ab87-f349d9b884ac'
-  ReservedCode2: '30417c7a-78d1-4dd2-ab87-f349d9b884ac'
----
-
 # agent-skills 个人使用备忘
 
 ## 仓库架构
@@ -81,23 +70,6 @@ git add -A && git commit -m "refactor: update dual-agent-pair-programming"
 git push origin my-skills
 ```
 
-## TeleAgent 软链接（手动）
-
-脚本不包含此步骤。按需手动创建：
-
-```bash
-# 单个 skill 软链接（推荐，一劳永逸）
-ln -s ~/workspace/aiproject/agent-skills/skills/dual-agent-pair-programming \
-      ~/.config/TeleAgent/skills/dual-agent-pair-programming
-
-# 如需替换已有的目录拷贝，先备份再链接
-mv ~/.config/TeleAgent/skills/<skill-name> ~/.config/TeleAgent/skills/<skill-name>.bak
-ln -s ~/workspace/aiproject/agent-skills/skills/<skill-name> \
-      ~/.config/TeleAgent/skills/<skill-name>
-```
-
-注意：并非所有 AI Agent 都支持软链接，TeleAgent 已验证可行。
-
 ## 零冲突原理
 
 自定义内容放在两个官方不会触碰的位置：
@@ -107,6 +79,15 @@ ln -s ~/workspace/aiproject/agent-skills/skills/<skill-name> \
 
 因此每次 `git merge main` 都是 clean merge，不会冲突。
 
-唯一需注意：不要修改 `README.md`、`plugin.json` 等共享文件来"注册"自定义 skill，否则 merge 时可能冲突。
+## 修改日志
 
-> AI生成
+20260818:
+
+using-agent-skills
+加入了：
+Multiple files + high correctness? → dual-agent-pair-programming
+
+| Orchestrate | dual-agent-pair-programming | Two-agent adversarial review: Agent A implements, Agent B reviews |
+
+---
+
