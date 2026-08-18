@@ -4,7 +4,9 @@
 #
 # 功能：clone fork → 配置 upstream → 创建 my-skills 分支 → 检查就绪
 # 用法：在 ~/workspace/aiproject/ 下执行 ./setup.sh
+# author: simon
 #
+
 set -euo pipefail
 
 # ============================================================================
@@ -106,6 +108,5 @@ echo "当前分支:   $(git branch --show-current)"
 echo ""
 info "下一步："
 echo "  1. 日常同步官方更新:  ./sync.sh"
-echo "  2. 手动创建 TeleAgent 软链接（按需）:"
-echo "     ln -s $TARGET_DIR/skills/<skill-name> ~/.config/TeleAgent/skills/<skill-name>"
-echo ""
+echo "  2. 指示各ai agent安装"
+
