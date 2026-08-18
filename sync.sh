@@ -5,7 +5,9 @@
 # 功能：fetch upstream → merge 到 main → push origin main
 #       → checkout my-skills → merge main → push origin my-skills
 # 用法：在仓库根目录执行 ./sync.sh
+# author: simon
 #
+
 set -euo pipefail
 
 # 颜色输出
@@ -65,8 +67,4 @@ echo ""
 green "=== 同步完成 ==="
 echo ""
 info "提示："
-echo "  - 如更新了自定义 skill，需手动同步到 TeleAgent："
-echo "    cp -r skills/<skill-name>/ ~/.config/TeleAgent/skills/<skill-name>/"
-echo "    或用软链接（一劳永逸）："
-echo "    ln -s $(pwd)/skills/<skill-name> ~/.config/TeleAgent/skills/<skill-name>"
-echo ""
+echo "  - 指示各ai agent更新skills"
