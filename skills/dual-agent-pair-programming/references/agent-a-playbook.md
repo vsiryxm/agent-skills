@@ -63,7 +63,7 @@ pnpm build       # or: npm run build, cargo build, etc.
 
 ## Phase 2: Producing the Handoff
 
-After implementation and quality gate pass, Agent A produces a **Handoff Document** using `templates/handoff-a-to-b.md` (or the inline format in SKILL.md).
+After implementation and quality gate pass, Agent A produces a **Handoff Document** using `templates/handoff-a-to-b.md` (read the template from disk when producing the handoff — do not reconstruct it from memory).
 
 **Delivery rules:**
 - Open a **fresh, isolated** Agent B session (see Prerequisites §5 in SKILL.md)
@@ -120,3 +120,5 @@ After addressing all findings:
 | Building UI | `frontend-ui-engineering` | Component architecture |
 | Pre-handoff self-check | `code-review-and-quality` | Self-review before handoff |
 | Git operations | `git-workflow-and-versioning` | Atomic commits |
+
+> AI生成

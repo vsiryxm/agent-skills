@@ -98,7 +98,21 @@ If the handoff includes Finding Responses from a previous cycle, treat each resp
 
 ## Phase 4: Producing the Verdict
 
-Agent B produces a **Review Verdict** using `templates/handoff-b-to-a.md` (or the inline format in SKILL.md).
+Match the verdict's form to its content — this is a token-efficiency rule, not a stylistic one:
+
+**APPROVE — session output only, no file:**
+
+```
+VERDICT: APPROVE — Task [ID] — cycle [N]
+Basis: [one line — e.g. all N acceptance criteria verified (file:line); lint/type/test/build all PASS]
+[optional one-line remark]
+```
+
+Do NOT write `.pair-review/**/handoff-b-to-a-r*.md` for an APPROVE — the todo "done" mark is the durable record. Do not pad it into a full document with empty findings sections or praise; "What's Done Well" is only worth a line if there is something specific to say.
+
+**REQUEST CHANGES / ESCALATE — structured findings:**
+
+Output per `templates/handoff-b-to-a.md` (read the template from disk): verdict, Layer-1 result, severity-categorized findings (file:line + recommended fix), independently verified gate results, and next action. Omit sections with nothing to say. Write the file to `.pair-review/task-{id}/handoff-b-to-a-r{n}.md` only when findings need cross-session tracking, when the user asks for archival, or when escalating to the human.
 
 **Rules for Agent B's direct fixes (if any):**
 - Must be minimal (<10 lines per fix) — this keeps B in the reviewer role, not the reimplementation role
@@ -118,3 +132,5 @@ Agent B produces a **Review Verdict** using `templates/handoff-b-to-a.md` (or th
 | Adversarial check | `doubt-driven-development` | Challenge Agent A's claims — including cited evidence |
 | Performance review | `performance-optimization` | N+1, unbounded ops |
 | Test quality | `test-driven-development` | Verify test adequacy |
+
+> AI生成
