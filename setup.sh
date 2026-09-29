@@ -3,7 +3,8 @@
 # setup.sh — 新机器初始化 agent-skills 仓库
 #
 # 功能：clone fork → 配置 upstream → 创建 my-skills 分支 → 检查就绪
-# 用法：在 ~/workspace/aiproject/ 下执行 ./setup.sh
+# 用法：在当前仓库根目录执行 ./setup.sh
+#       （脚本已在 git 仓库内则直接复用该仓库，不会重复 clone）
 # author: simon
 #
 
@@ -14,12 +15,20 @@ set -euo pipefail
 # ============================================================================
 GITHUB_USER="vsiryxm"
 REPO_NAME="agent-skills"
-UPSTREAM_URL="git@github.com:addyosmani/agent-skills.git"
-INSTALL_DIR="$HOME/workspace/aiproject"
+UPSTREAM_URL="https://github.com/addyosmani/agent-skills.git"
+INSTALL_DIR="$HOME/workspace/ai-project"
 # ============================================================================
 
 ORIGIN_URL="git@github.com:${GITHUB_USER}/${REPO_NAME}.git"
-TARGET_DIR="${INSTALL_DIR}/${REPO_NAME}"
+
+# TARGET_DIR 解析：脚本自身若已在 git 仓库内，直接复用该目录；
+# 否则按 INSTALL_DIR/REPO_NAME 定位（新机器首次 clone 的场景）。
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -d "${SCRIPT_DIR}/.git" ]; then
+    TARGET_DIR="${SCRIPT_DIR}"
+else
+    TARGET_DIR="${INSTALL_DIR}/${REPO_NAME}"
+fi
 
 # 颜色输出
 red()    { printf "\033[31m%s\033[0m\n" "$1"; }
@@ -34,33 +43,47 @@ echo ""
 # ── 1. 检查 SSH 连通性 ──────────────────────────────────────────────
 info "[1/5] 检查 GitHub SSH 连通性..."
 
-if ! ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+# 注意：认证成功时 ssh -T 的退出码仍为 1（GitHub 不提供 shell access），
+# 而脚本开了 pipefail，若写成 `cmd | grep -q KEY` 会取走 ssh 的 1 导致误判。
+# 因此这里先捕获输出（`|| true` 防止 set -e 中断），再对文本做匹配。
+SSH_OUT="$(ssh -T -o BatchMode=yes -o StrictHostKeyChecking=accept-new git@github.com 2>&1 || true)"
+if ! printf '%s\n' "${SSH_OUT}" | grep -q "successfully authenticated"; then
     red "  SSH 认证失败。请先配置 GitHub SSH key："
     echo "    1. 生成 key:  ssh-keygen -t ed25519 -C 'your_email@example.com'"
     echo "    2. 添加到 ssh-agent: eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519"
     echo "    3. 复制公钥:  pbcopy < ~/.ssh/id_ed25519.pub"
     echo "    4. 添加到 GitHub: Settings → SSH and GPG keys → New SSH key"
     echo "    5. 测试连接:  ssh -T git@github.com"
+    echo ""
+    echo "  ssh 实际返回:"
+    printf '%s\n' "${SSH_OUT}" | sed 's/^/    /'
     exit 1
 fi
 green "  SSH 认证通过"
 
-# ── 2. 检查父目录 ───────────────────────────────────────────────────
+# ── 2. 检查目标目录 ─────────────────────────────────────────────────
 info "[2/5] 检查安装目录..."
-if [ ! -d "$INSTALL_DIR" ]; then
-    mkdir -p "$INSTALL_DIR"
-    yellow "  已创建目录: $INSTALL_DIR"
+if [ -d "$TARGET_DIR" ]; then
+    green "  目标目录已存在: ${TARGET_DIR}"
+elif [ -d "$INSTALL_DIR" ]; then
+    green "  父目录已存在: ${INSTALL_DIR}"
+    yellow "  目标目录待 clone: ${TARGET_DIR}"
 else
-    green "  目录已存在: $INSTALL_DIR"
+    mkdir -p "$INSTALL_DIR"
+    yellow "  已创建目录: ${INSTALL_DIR}"
 fi
 
 # ── 3. 检查是否已 clone ──────────────────────────────────────────────
 info "[3/5] Clone fork 仓库..."
-if [ -d "$TARGET_DIR/.git" ]; then
-    yellow "  仓库已存在: $TARGET_DIR（跳过 clone）"
+if [ -d "${TARGET_DIR}/.git" ]; then
+    yellow "  仓库已存在: ${TARGET_DIR}（跳过 clone）"
+elif [ -e "$TARGET_DIR" ]; then
+    red "  目标目录已存在但不是 git 仓库: ${TARGET_DIR}"
+    echo "  请先移走该目录，或修正 INSTALL_DIR 后重试。"
+    exit 1
 else
     git clone "$ORIGIN_URL" "$TARGET_DIR"
-    green "  Clone 完成: $TARGET_DIR"
+    green "  Clone 完成: ${TARGET_DIR}"
 fi
 
 cd "$TARGET_DIR"
